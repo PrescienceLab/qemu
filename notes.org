@@ -1,0 +1,42 @@
+* Building QEMU
+
+#+begin_src sh
+export SHELL=bash
+qemu/ $ mkdir build && cd build
+
+# Builds everything
+$ ../configure --prefix="$QEMU_ROOT/install" \
+               --cc=gcc \
+               --host-cc=gcc \
+               --cxx=g++
+
+# Build RISC-V userspace with TCG
+$ ../configure --prefix="$QEMU_ROOT/install" \
+               --disable-system \
+               --target-list=riscv32-linux-user,riscv64-linux-user \
+               --cc=gcc \
+               --host-cc=gcc \
+               --cxx=g++ \
+               --enable-debug \
+               --enable-debug-info \
+               --enable-tcg \
+               --enable-debug-tcg \
+               --enable-modules \
+               --enable-plugins
+
+# Build RISC-V system with TCG
+$ ../configure --prefix="$QEMU_ROOT/install" \
+               --enable-system \
+               --target-list=riscv32-softmmu,riscv64-softmmu \
+               --cc=gcc \
+               --host-cc=gcc \
+               --cxx=g++ \
+               --enable-debug \
+               --enable-debug-info
+               --enable-tcg \
+               --enable-debug-tcg \
+               --enable-modules \
+               --enable-plugins
+
+$ make -j
+#+end_src
